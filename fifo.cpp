@@ -21,7 +21,9 @@ Fifo::Fifo(){
 Fifo::Fifo(string name){
   // create a named pipe (FIFO)
   // build the name string
-  pipename = PATH + SIG + name;
+  string path = PATH;
+  string sig = SIG;
+  pipename = path + sig + name;
 
   umask(0);
   // Create (or open) the fifo

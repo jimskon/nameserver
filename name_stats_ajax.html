@@ -63,12 +63,12 @@ function getresponse () {
 						 + "&name=" + name
 						 ,true);
     XMLHttp.onreadystatechange=function() {
-
-    var table = nameTable(XMLHttp.responseText);
-    document.getElementById('response_area').innerHTML = table;
-
+	if (XMLHttp.readyState == 4) {
+	    var table = nameTable(XMLHttp.responseText);
+	    document.getElementById('response_area').innerHTML = table;
+        }
     }
-	XMLHttp.send(null);
+    XMLHttp.send(null);
 }
 
 </script>
