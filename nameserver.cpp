@@ -1,15 +1,14 @@
 /***************************************************************************
 * nameservercpp  -  Program to serve of last name statistics
  *
-* copyright : (C) 2009 by Jim Skon
+* copyright : (C) 2009-2017 by Jim Skon
 *
 * This program runs as a background server to a CGI program, providinging US Census
 * Data on the frequency of names in response to requestes.  The rational for this 
 * is to demonstrait how a background process can serve up information to a web program,
 * saving the web program from the work of intiallizing large data structures for every
 * call.
-* 
-* 
+*  
 *
 ***************************************************************************/
 #include <sys/types.h>
@@ -38,6 +37,7 @@ struct name_record
   string rank;         // Rank of this Name in terms of frequency
 };
 
+// Maps for holding the name data
 map<string,name_record> lname_map;
 map<string,name_record> fname_map;
 map<string,name_record> mname_map;
@@ -45,7 +45,7 @@ map<string,name_record>::iterator it;
 
 /*
  * Read the US Census data file "dist.all.last" and load it into an
- * in memory b+tree with name as the key.
+ * C++ STL MAP with name as the key.
  *
  * Return 1 if success, 0 if fail
  */
@@ -73,7 +73,7 @@ int createnamemap(map<string,name_record> &name_map ,string filename) {
 }
 
 
-/* Server main line,create name MAP, wait for and serve requests */
+/* Server main line: create name MAPs, wait for and serve requests */
 int main() {
   
   string inMessage, outMessage,name,percent,rank,type;
@@ -121,7 +121,8 @@ int main() {
 	name = inMessage.substr(pos,2000);
 	cout << "Message: " << type << " : " << name << endl;
 
-	
+	// Set curMap to be the map requested
+	// Set it to be an iterator for the appropriate map
 	if (type == "$LAST") {
 	  //Get the closest match
 	  it = lname_map.lower_bound (name);
